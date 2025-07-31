@@ -2,7 +2,45 @@
 <html lang="en">
 <head>
 	<title>File Server</title>
-	
-
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+		ul {
+			list-style-type: none;
+		}
+		li {
+			margin: 5px;
+		}
+		a {
+			color: blue;
+			text-decoration: none;
+		}
+	</style>
 </head>
-
+<body>
+	<h1>Files in Directory</h1>
+	<ul id="file-list"></ul>
+	<script>
+		function loadFileList() {
+			fetch("/files")
+			.then(response => response.json())
+			.then(files => {
+				const fileList = document.getElementById("file-list");
+				files.forEach(file => {
+					const li = document.createElement("li");
+					li.textContent = file;
+					fileList.appendChild(li)
+				});
+			})
+			.catch(error => {
+				console.eror("Error fetching file list: ", error);
+			});
+		}
+		window.onload = function() {
+			loadFileList();
+		}
+	</script>
+</body>
+</html>
