@@ -1,22 +1,15 @@
-const fs = require("fs");  // file system
-const http = require("http");  // http server
-const path = require("path");  // file directories
-const url = require("url");  //url
+const fs = require("fs");
+const http = require("http");
+const path = require("path");
 
 const port = 3000;
 const fileDirectory = __dirname;
 
 const server = http.createServer(function(req, res) {
-	const reqURL = new URL(`http://localhost:${port}`);
-	const fileName = reqURL.pathname.replace("/", "");
-	const filePath = path.join(fileDirectory, fileName);
-
-	console.log(reqURL);
 	console.log("Working Directory: " + fileDirectory);
-	console.log("Current File: " + fileName);
 	res.write("This is a response.");
 
-	fs.readdir(fileDirectory, function(error, files) { //reading through directory
+	fs.readdir(fileDirectory, function(error, files) {
 		if (error) {
 			console.log("Error reading directory");
 		}
@@ -27,7 +20,7 @@ const server = http.createServer(function(req, res) {
 
 });
 
-server.listen(port, function(error) { //port listening
+server.listen(port, function(error) {
 	if (error) {
 		console.log("Something went wrong!", error);
 	}
