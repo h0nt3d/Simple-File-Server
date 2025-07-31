@@ -7,17 +7,15 @@ const fileDirectory = __dirname;
 
 const server = http.createServer(function(req, res) {
 	console.log("Working Directory: " + fileDirectory);
-	res.write("This is a response.");
 
 	fs.readdir(fileDirectory, function(error, files) {
 		if (error) {
 			console.log("Error reading directory");
 		}
 		console.log("Files in directory: ", files);
+		res.writeHead(200, {"Content-Type": "application/json"})
+		res.end(JSON.stringify(files));
 	});
-
-	res.end();
-
 });
 
 server.listen(port, function(error) {
