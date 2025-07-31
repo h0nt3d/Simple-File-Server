@@ -12,9 +12,11 @@ const server = http.createServer(function(req, res) {
 		if (error) {
 			console.log("Error reading directory");
 		}
-		console.log("Files in directory: ", files);
-		res.writeHead(200, {"Content-Type": "application/json"})
-		res.end(JSON.stringify(files));
+		if (req.url="/" && req.method == "GET") {
+			console.log("Files in directory: ", files);
+			res.writeHead(200, {"Content-Type": "application/json"})
+			res.end(JSON.stringify(files));
+		}
 	});
 });
 
