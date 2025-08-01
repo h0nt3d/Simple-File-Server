@@ -3,13 +3,12 @@ const http = require("http");
 const path = require("path");
 const formidable = require("formidable");
 
-
 const port = 3000;
-const fileDirectory = path.join(__dirname, "files");
+const fileDirectory = path.join(__dirname, "/public/files");
 
 const server = http.createServer(function(req, res) {
 	if (req.url == "/" && req.method == "GET") {
-		fs.readFile(path.join(__dirname, "index.html"),"utf-8", function(error, data) {
+		fs.readFile(path.join(__dirname, "/public/index.html"),"utf-8", function(error, data) {
 			if (error) {
 				console.log("Error loading index.html");
 			}
