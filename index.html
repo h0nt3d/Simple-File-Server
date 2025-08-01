@@ -3,24 +3,17 @@
 <head>
 	<title>File Server</title>
 	<style>
-		body {
-			font-family: Arial, sans-serif;
-			margin: 20px;
-		}
-		ul {
-			list-style-type: none;
-		}
-		li {
-			margin: 5px;
-		}
-		a {
-			color: blue;
-			text-decoration: none;
+		.download-btn {
+			padding: 5px;
+			margin-left: 10px;
+			color: red;
+			border: none;
+			cursor: pointer;
 		}
 	</style>
 </head>
 <body>
-	<h1>Files in Directory</h1>
+	<h1>FILES</h1>
 	<ul id="file-list"></ul>
 	<script>
 		function loadFileList() {
@@ -29,9 +22,22 @@
 			.then(files => {
 				const fileList = document.getElementById("file-list");
 				files.forEach(file => {
-					const li = document.createElement("li");
-					li.textContent = file;
-					fileList.appendChild(li)
+					const li = document.createElement("li")
+					const fileText = document.createTextNode(file);
+					li.appendChild(fileText);
+					
+					const downloadButton = document.createElement("button");
+					downloadButton.className = "download-btn"
+					downloadButton.textContent = "Download";
+
+					downloadButton.onclick = function() {
+						window.location.href = "/files/" + file;
+					}
+
+					li.appendChild(downloadButton);
+
+					fileList.appendChild(li);
+
 				});
 			})
 			.catch(error => {
