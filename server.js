@@ -6,7 +6,6 @@ const formidable = require("formidable");
 
 const port = 3000;
 const fileDirectory = path.join(__dirname, "files");
-console.log(new URL(`http://localhost:${port}`));
 
 const server = http.createServer(function(req, res) {
 	if (req.url == "/" && req.method == "GET") {
@@ -52,8 +51,7 @@ const server = http.createServer(function(req, res) {
 			console.log("Upload Error");
 			}
 
-			console.log("Files received: ", fields);
-			console.log("Files receivedL ", files);
+			console.log("Files received: ", files);
 
 			const uploadedFile = files.file[0];
 			if (!uploadedFile) {
@@ -62,7 +60,7 @@ const server = http.createServer(function(req, res) {
 			}
 
 			const oldPath = uploadedFile.filepath;
-			const newPath = path.join(fileDirectory, uploadedFile.originalFilename || "uploaded_file");
+			const newPath = path.join(fileDirectory, uploadedFile.originalFilename);
 
 			fs.rename(oldPath, newPath, function(err){
 				if (err) {
@@ -71,7 +69,6 @@ const server = http.createServer(function(req, res) {
 				res.writeHead(200);
 				res.end("File uploaded succesfully");
 			});
-
 
 		});
 	}
