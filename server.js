@@ -1,6 +1,7 @@
 const fs = require("fs");
 const http = require("http");
 const path = require("path");
+const formidable = require("formidable");
 
 
 const port = 3000;
@@ -39,6 +40,39 @@ const server = http.createServer(function(req, res) {
 			else {
 				console.log("Error, file not found");
 			}
+		});
+	}
+	else if (req.url == "/upload" && req.method == "POST") {
+		const form = new formidable.IncomingForm({multiples: false});
+		form.uploadDir = fileDirectory;
+		form.keepExtensions = true;
+
+		form.parse(req, function(err, fields, files) {
+			if (err) {
+			console.log("Upload Error");
+			}
+
+			console.log("Files received: ", fields);
+			console.log("Files receivedL ", files);
+
+			const uploadedFile = files.file[0];
+			if (!uploadedFile) {
+				res.writeHead(400);
+				return res.end("No file uploaded");
+			}
+
+			const oldPath = uploadedFile.filepath;
+			const newPath = path.join(fileDirectory, uploadedFile.originalFilename || "uploaded_file");
+
+			fs.rename(oldPath, newPath, function(err){
+				if (err) {
+					console.log("File upload failed");		
+				}
+				res.writeHead(200);
+				res.end("File uploaded succesfully");
+			});
+
+
 		});
 	}
 });

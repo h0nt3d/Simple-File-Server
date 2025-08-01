@@ -5,15 +5,24 @@
 	<style>
 		.download-btn {
 			padding: 5px;
-			margin-left: 10px;
+			margin-left: 150px;
 			color: red;
 			border: none;
 			cursor: pointer;
+		}
+		.upload-btn {
+			padding: 5px;
+			vertical-align: text-bottom;
 		}
 	</style>
 </head>
 <body>
 	<h1>FILES</h1>
+	<h2>Upload File</h2>
+	<form id="upload-form" enctype="multipart/form-data" method="post">
+		<input type="file" name="file" id="file-input" required />
+		<button type="submit" class="upload-btn">Upload</button>
+	</form>
 	<ul id="file-list"></ul>
 	<script>
 		function loadFileList() {
@@ -27,23 +36,38 @@
 					li.appendChild(fileText);
 					
 					const downloadButton = document.createElement("button");
-					downloadButton.className = "download-btn"
+					downloadButton.className = "download-btn";
 					downloadButton.textContent = "Download";
 
 					downloadButton.onclick = function() {
 						window.location.href = "/files/" + file;
 					}
-
 					li.appendChild(downloadButton);
-
 					fileList.appendChild(li);
-
 				});
 			})
 			.catch(error => {
 				console.eror("Error fetching file list: ", error);
 			});
 		}
+		document.getElementById("upload-form").addEventListener("submit", function(e){
+			e.preventDefault();
+			const fileInput = document.getElementById("file-input");
+			const file = fileInput.files[0];
+			
+			const formData = new FormData();
+			formData.append("file", file);
+			
+			fetch("/upload", {
+				method: "POST",
+				body: formData
+			})
+			.then(res => res.text())
+			.then(msg => {
+				alert(msg);
+			})
+			.catch(error => alert("Upload Failed: " + error));
+		});
 		window.onload = function() {
 			loadFileList();
 		}
